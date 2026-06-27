@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>现代 C++ 编程 - 第 1 章：介绍</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --paper: #ffffff;
+      --ink: #1f2933;
+      --muted: #64748b;
+      --line: #d8dee9;
+      --accent: #0f766e;
+      --accent-soft: #e0f2f1;
+      --code: #f1f5f9;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.65;
+    }
+
+    header {
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 42px 0 30px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .meta {
+      margin-top: 14px;
+      color: var(--muted);
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    main {
+      padding: 26px 0 56px;
+    }
+
+    .toc {
+      padding: 20px;
+      margin-bottom: 24px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .toc h2,
+    .section-title {
+      margin: 0 0 14px;
+      font-size: 1.35rem;
+      letter-spacing: 0;
+    }
+
+    .toc ol {
+      margin: 0;
+      padding-left: 24px;
+      columns: 2;
+      column-gap: 48px;
+    }
+
+    .toc li {
+      break-inside: avoid;
+      margin: 4px 0;
+    }
+
+    .chapter-section {
+      margin: 30px 0 16px;
+      padding-top: 4px;
+    }
+
+    .slide {
+      margin: 16px 0;
+      padding: 22px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .slide h3 {
+      margin: 0 0 12px;
+      font-size: 1.2rem;
+      letter-spacing: 0;
+    }
+
+    .slide .page {
+      float: right;
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 22px;
+    }
+
+    li + li {
+      margin-top: 6px;
+    }
+
+    blockquote {
+      margin: 12px 0;
+      padding: 12px 16px;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      color: #134e4a;
+    }
+
+    code,
+    pre {
+      background: var(--code);
+      border-radius: 5px;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    }
+
+    code {
+      padding: 1px 4px;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      line-height: 1.45;
+    }
+
+    footer {
+      padding: 28px 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      background: var(--paper);
+    }
+
+    @media (max-width: 760px) {
+      .wrap {
+        width: min(100% - 24px, 1080px);
+      }
+
+      .toc ol {
+        columns: 1;
+      }
+
+      .slide {
+        padding: 18px;
+      }
+
+      .slide .page {
+        float: none;
+        display: block;
+        margin-bottom: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero">
+      <p class="eyebrow">Modern C++ Programming</p>
+      <h1>第 1 章：介绍</h1>
+      <p class="meta">Federico Busato，原课件日期：2026-01-06。本页为简体中文汉化版，按原 HTML/PDF 章节结构整理。</p>
+      <nav class="links" aria-label="相关链接">
+        <a class="button" href="../../01.Introduction.pdf">原 PDF</a>
+        <a class="button" href="https://federico-busato.github.io/Modern-CPP-Programming/htmls/01.Introduction.html">原 HTML</a>
+        <a class="button" href="../../README.zh-CN.md">中文 README</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="toc" aria-labelledby="toc-title">
+      <h2 id="toc-title">目录</h2>
+      <ol>
+        <li><a href="#motivation">学习动机</a></li>
+        <li><a href="#history">C/C++ 编程语言简史</a></li>
+        <li><a href="#applications">应用领域与流行度</a></li>
+        <li><a href="#philosophy">C++ 哲学</a></li>
+        <li><a href="#weaknesses">C++ 的弱点</a></li>
+        <li><a href="#alternatives">C++ 替代语言</a></li>
+        <li><a href="#switching">为什么切换到新语言很难</a></li>
+        <li><a href="#course">课程说明</a></li>
+      </ol>
+    </section>
+
+    <section id="motivation" class="chapter-section">
+      <h2 class="section-title">学习动机</h2>
+
+      <article class="slide">
+        <span class="page">2/55</span>
+        <h3>关于动机 1/5</h3>
+        <blockquote>招聘研究助理时，成绩通常不是最重要的指标；想象力、抱负、主动性、好奇心和驱动力更能预测一个人是否能做出有用的工作。</blockquote>
+        <ul>
+          <li>课程成绩与能力有相关性，但并不能完整衡量创造力和主动性。</li>
+          <li>真正的突破常常发生在自发探索和课外项目中。</li>
+          <li>学习 C++ 需要完成课程任务，也需要持续判断什么问题真正重要。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">3/55</span>
+        <h3>关于动机 2/5</h3>
+        <ul>
+          <li>学业优秀并不强烈预测职业优秀，尤其在毕业数年后更是如此。</li>
+          <li>考试成绩很少直接评估创造力、领导力、团队协作和复杂社会能力。</li>
+          <li>职业成功往往不只是找到正确答案，而是找到值得解决的正确问题。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">4/55</span>
+        <h3>关于动机 3/5</h3>
+        <ul>
+          <li>追求全 A 往往鼓励遵从规则；有影响力的职业生涯更需要原创性。</li>
+          <li>如果目标只是成绩单无瑕，学生更容易选择简单课程并停留在舒适区。</li>
+          <li>适度承担失败风险，可以积累面对挫折的经验，形成韧性。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">5/55</span>
+        <h3>关于动机 4/5</h3>
+        <ul>
+          <li>只追求高分可能会牺牲社交、社团、志愿活动和长期友谊。</li>
+          <li>课程学习很重要，但不应该挤掉所有探索和真实实践。</li>
+          <li>原材料引用 Adam Grant 在《纽约时报》关于 GPA 与职业成功关系的讨论。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">6/55</span>
+        <h3>关于动机 5/5</h3>
+        <ul>
+          <li>STEM 对所有人都难，困难本身不是退出的理由。</li>
+          <li>长期来看，好奇心和坚持往往比单次成绩更重要。</li>
+          <li>原材料引用 NASA Mars Science Laboratory 首席软件工程师 Ben Cichy 的经历。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">7/55</span>
+        <h3>关于编程 1/2</h3>
+        <ul>
+          <li>编程的吸引力在于：你创建一个小宇宙，然后让它按你的指令运行。</li>
+          <li>优秀程序员不只为了报酬或赞美写程序，也因为编程本身有趣。</li>
+          <li>编程是一种基于逻辑的创造性工作。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">8/55</span>
+        <h3>关于编程 2/2</h3>
+        <ul>
+          <li><strong>创造力：</strong>用新方式理解问题，并提出原创解决方案。</li>
+          <li><strong>艺术形式：</strong>代码和算法也能呈现优雅与美感。</li>
+          <li><strong>学习：</strong>编程让人每天学习新知识、提升技能。</li>
+          <li><strong>挑战：</strong>编程是与自己、问题和环境之间的持续挑战。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">9/55</span>
+        <h3>知识与经验的关系</h3>
+        <ul>
+          <li>知识需要通过实践转化为经验。</li>
+          <li>经验又会反过来帮助筛选、组织和深化知识。</li>
+          <li>C++ 学习尤其依赖这种循环，因为语言细节与工程上下文强相关。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">10/55</span>
+        <h3>学习与思考</h3>
+        <blockquote>在软件开发中，学习不是工作的一小部分；学习就是工作本身。</blockquote>
+        <blockquote>编程不是打字，而是思考。</blockquote>
+        <ul>
+          <li>学习现代 C++ 时，应该把重点放在模型、语义、约束和权衡上。</li>
+          <li>语法只是入口，思考才是核心工作。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="history" class="chapter-section">
+      <h2 class="section-title">C/C++ 编程语言简史</h2>
+
+      <article class="slide">
+        <span class="page">11/55</span>
+        <h3>汇编语言</h3>
+        <ul>
+          <li>汇编指令非常简单，但完成简单任务也需要大量代码。</li>
+          <li>汇编几乎能表达计算机能做的一切，但读写困难。</li>
+          <li>大量冗余和重复劳动会导致枯燥的编程体验与更多缺陷。</li>
+        </ul>
+        <pre><code>main:
+    push rbp
+    mov rbp, rsp
+    call printf
+    ret</code></pre>
+      </article>
+
+      <article class="slide">
+        <span class="page">12/55</span>
+        <h3>C 语言简史 1/3</h3>
+        <ul>
+          <li>1969 年，Dennis M. Ritchie 和 Ken Thompson 在 AT&amp;T 贝尔实验室开发 UNIX。</li>
+          <li>早期 UNIX 主要使用汇编编写，也包含 Fortran 和 B 语言解释器。</li>
+          <li>B 语言提高了开发效率，但缺少数据类型和结构体等能力。</li>
+          <li>这些不足促使 Dennis Ritchie 设计 C 语言；ANSI C 最终标准定义于 1988 年发布。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">13/55</span>
+        <h3>C 语言简史 2/3</h3>
+        <p>Dennis M. Ritchie 与 Ken Thompson 是 C 和 UNIX 历史中的核心人物。</p>
+        <pre><code>#include &lt;stdio.h&gt;
+
+int main() {
+    printf("Hello World\n");
+}</code></pre>
+      </article>
+
+      <article class="slide">
+        <span class="page">14/55</span>
+        <h3>C 语言简史 3/3</h3>
+        <ul>
+          <li>C 被广泛用于操作系统、游戏、图形程序、工业系统和嵌入式系统。</li>
+          <li>C 的设计强调接近硬件、运行效率和可移植性。</li>
+          <li>C 同时也把许多底层责任交给程序员，这影响了后续 C++ 的设计取舍。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">15/55</span>
+        <h3>C++ 简史 1/3</h3>
+        <ul>
+          <li>C++ 最初名为 “C with Classes”，由贝尔实验室的 Bjarne Stroustrup 设计。</li>
+          <li>Stroustrup 于 1979 年开始这项工作。</li>
+          <li>名称中的 <code>++</code> 来自 C 语言的自增运算符，暗示它是 C 的增强。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">16/55</span>
+        <h3>C++ 简史 2/3</h3>
+        <ul>
+          <li>C++ 的根源包括 C、Simula、Algol 等语言思想。</li>
+          <li>它把低层控制能力与更高层抽象机制结合起来。</li>
+          <li>这种组合让 C++ 既能靠近硬件，也能表达复杂软件结构。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">17/55</span>
+        <h3>C++ 简史 3/3</h3>
+        <ul>
+          <li>C++ 经历了长期演化，从早期面向对象扩展发展为多范式系统语言。</li>
+          <li>现代 C++ 标准持续加入泛型、并发、编译期计算和库能力。</li>
+          <li>学习现代 C++ 需要理解历史包袱，也要理解新标准带来的抽象方式。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">18/55</span>
+        <h3>关于演化</h3>
+        <blockquote>如果你今天教的内容和五年前完全一样，要么这个领域已经停滞，要么你自己停滞了。</blockquote>
+        <ul>
+          <li>C++ 不是静态语言，它持续随硬件、软件工程和标准演化。</li>
+          <li>课程需要覆盖历史基础，也需要覆盖当代实践。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="applications" class="chapter-section">
+      <h2 class="section-title">应用领域与流行度</h2>
+
+      <article class="slide">
+        <span class="page">19/55 - 21/55</span>
+        <h3>流行编程语言榜单</h3>
+        <ul>
+          <li>课件引用 IEEE Spectrum、TIOBE 和 RedMonk 等榜单展示语言流行度。</li>
+          <li>C++ 长期保持高可见度，尤其在性能敏感和系统级领域。</li>
+          <li>榜单只能反映某些维度，不能替代对应用场景的工程判断。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">22/55 - 23/55</span>
+        <h3>为什么 C++ 如此流行</h3>
+        <ul>
+          <li>全球可能存在数千亿行 C/C++ 代码，历史资产巨大。</li>
+          <li>性能是 C++ 的定义性特征之一。</li>
+          <li>C++ 支持从低功耗嵌入式设备到大型超级计算机的广泛平台。</li>
+          <li>C++ 是多范式语言，允许在高层抽象和底层控制之间切换。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">24/55 - 25/55</span>
+        <h3>C++ 的应用领域</h3>
+        <ul>
+          <li>操作系统：Windows、Android、OS X、Linux。</li>
+          <li>编译器：LLVM、Swift 编译器。</li>
+          <li>人工智能：TensorFlow、Caffe、Microsoft Cognitive Toolkit。</li>
+          <li>科学计算：CERN、NASA、SETI@home、Folding@home。</li>
+          <li>数据库：MySQL、ScyllaDB。</li>
+          <li>游戏与引擎：Unreal Engine、Unity。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">26/55 - 27/55</span>
+        <h3>C++ 为什么重要</h3>
+        <ul>
+          <li>历史上的性能缩放趋势正在放缓，算法设计越来越受性能限制影响。</li>
+          <li>AI 模型规模增长远快于传统摩尔定律速度，工程效率和硬件利用率更关键。</li>
+          <li>当性能成为产品能力边界时，C++ 的控制力仍然有重要价值。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">28/55 - 31/55</span>
+        <h3>性能</h3>
+        <ul>
+          <li>课件用 N-body simulation、语言 benchmark 和 Hello World 等例子讨论性能差异。</li>
+          <li>性能比较需要关注工作负载、运行环境、编译器优化和测量方法。</li>
+          <li>C++ 常用于需要低延迟、高吞吐或可预测资源使用的场景。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">32/55 - 35/55</span>
+        <h3>表达力、内存、能耗与 CO2</h3>
+        <ul>
+          <li>语言的表达力和运行效率之间常存在权衡。</li>
+          <li>内存占用会影响成本、性能和可部署性。</li>
+          <li>能耗与碳排放也是高性能计算和大规模服务中的工程指标。</li>
+          <li>高性能不是只为了快，也关系到资源效率和环境成本。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="philosophy" class="chapter-section">
+      <h2 class="section-title">C++ 哲学</h2>
+
+      <article class="slide">
+        <span class="page">36/55</span>
+        <h3>C++ 哲学：性能 1/3</h3>
+        <ul>
+          <li>除非别无选择，不应牺牲性能。</li>
+          <li>零开销原则：不使用某个抽象时不应为它付费；使用时也应接近手写底层代码的成本。</li>
+          <li>高层抽象和底层效率不是必然冲突，C++ 的目标是尽量同时满足两者。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">37/55</span>
+        <h3>C++ 哲学：类型安全 2/3</h3>
+        <ul>
+          <li>只要可能，就在编译期强制安全性。</li>
+          <li>C++ 是静态类型语言，编译器可以在运行前捕获大量类型错误。</li>
+          <li>类型系统也是表达设计意图和约束的重要工具。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">38/55</span>
+        <h3>C++ 哲学 3/3</h3>
+        <ul>
+          <li>编程模型强调分层和局部化复杂性。</li>
+          <li>只有当新特性解决实际问题时才加入语言。</li>
+          <li>在约束条件下追求可预测运行时，不依赖垃圾回收。</li>
+          <li>给程序员完整控制权，同时也要求程序员承担更多责任。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">39/55</span>
+        <h3>C++ 适合谁</h3>
+        <blockquote>C++ 适合那些想很好地使用硬件，并通过抽象管理复杂性的人。</blockquote>
+        <ul>
+          <li>这门语言特别适合需要理解性能、资源和抽象成本的开发者。</li>
+          <li>它不是最简单的入门语言，但非常适合系统性理解软件与硬件的边界。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">40/55</span>
+        <h3>推荐介绍视频</h3>
+        <p>原课件在此处给出推荐观看材料，用于补充 C++ 设计哲学和语言定位。</p>
+      </article>
+    </section>
+
+    <section id="weaknesses" class="chapter-section">
+      <h2 class="section-title">C++ 的弱点</h2>
+
+      <article class="slide">
+        <span class="page">41/55 - 42/55</span>
+        <h3>为什么 C++ 困难</h3>
+        <ul>
+          <li>C++ 很难作为第一门编程语言教学，因为它同时包含多种语言风格。</li>
+          <li>语言规模大，既有 C 兼容特性，也有现代抽象机制。</li>
+          <li>程序员需要理解对象生命周期、内存、类型推导、模板、重载和未定义行为等多个层面。</li>
+          <li>C++ 可以降低犯错概率，但一旦犯错，后果可能很严重。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">43/55 - 44/55</span>
+        <h3>C++ 的弱点</h3>
+        <ul>
+          <li>向后兼容意味着危险默认行为和来自 C 的旧构造很难移除或彻底修改。</li>
+          <li>复杂性来自历史、性能目标、兼容性和多范式能力的叠加。</li>
+          <li>语言委员会需要在修复问题、保持兼容和推动演化之间持续权衡。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="alternatives" class="chapter-section">
+      <h2 class="section-title">C++ 替代语言</h2>
+
+      <article class="slide">
+        <span class="page">45/55</span>
+        <h3>Rust</h3>
+        <ul>
+          <li>Rust 1.0 发布于 2015 年，长期在 Stack Overflow 调查中拥有很高喜爱度。</li>
+          <li>Rust 与 C++ 一样关注性能和零成本抽象。</li>
+          <li>Rust 的核心目标之一是预防许多 C++ 常见漏洞，尤其是内存相关错误。</li>
+          <li>代价是更严格的所有权和借用模型，需要开发者改变设计习惯。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">46/55</span>
+        <h3>Zig</h3>
+        <ul>
+          <li>Zig 发布于 2016 年，是一种极简开源系统编程语言，可视作 C 的替代候选。</li>
+          <li>它支持编译期泛型、反射与求值、交叉编译和手动内存管理。</li>
+          <li>Zig 设计上强调与 C 的互操作性，并试图减少隐藏控制流和隐藏分配。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="switching" class="chapter-section">
+      <h2 class="section-title">为什么切换到新语言很难</h2>
+
+      <article class="slide">
+        <span class="page">47/55 - 49/55</span>
+        <h3>迁移障碍</h3>
+        <ul>
+          <li>不存在完美语言，总会有更新、更闪亮的语言出现。</li>
+          <li>组织内所有开发者同时切换语言非常困难。</li>
+          <li>已有数千亿行代码需要互操作，不能简单抛弃。</li>
+          <li>安全语言的运行时开销、边界检查成本和生态成熟度都需要评估。</li>
+          <li>工具链、依赖、构建系统、招聘和培训成本也会影响迁移决策。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">50/55</span>
+        <h3>语言复杂度</h3>
+        <blockquote>每一秒花在理解语言上的时间，都是没有花在理解问题上的时间。</blockquote>
+        <ul>
+          <li>语言复杂度会直接消耗认知预算。</li>
+          <li>现代 C++ 学习的目标之一，是把复杂性整理成可使用的模型。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="course" class="chapter-section">
+      <h2 class="section-title">课程说明</h2>
+
+      <article class="slide">
+        <span class="page">51/55 - 54/55</span>
+        <h3>课程目标与组织</h3>
+        <ul>
+          <li>课程更准确的名称应是“现代 C++ 编程导论”。</li>
+          <li>许多主题本身都有专门书籍，本课程只能在有限时间内建立整体框架。</li>
+          <li>主要目标是帮助已有 C/C++ 和面向对象经验的学习者达到熟练 C++ 编程水平。</li>
+          <li>课程组织为 29 讲，约 2000 页幻灯片。</li>
+          <li>内容覆盖基础语义、面向对象、模板、翻译单元、编码规范、调试测试、生态、标准库、优化和软件设计。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">55/55</span>
+        <h3>作者与结束语</h3>
+        <ul>
+          <li>Federico Busato，Ph.D.，NVIDIA 高级软件工程师。</li>
+          <li>“我不能创造的东西，我就没有理解。”</li>
+          <li>“学习一门新编程语言的唯一方法，就是用它编写程序。”</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>本汉化页基于 Federico Busato 的 Modern C++ Programming 第 1 章整理。原课程内容许可证请参见仓库中的 LICENSE 文件。</p>
+    </div>
+  </footer>
+</body>
+</html>
