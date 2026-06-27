@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>现代 C++ 编程 - 第 2 章：准备工作</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --paper: #ffffff;
+      --ink: #1f2933;
+      --muted: #64748b;
+      --line: #d8dee9;
+      --accent: #0f766e;
+      --accent-soft: #e0f2f1;
+      --code: #f1f5f9;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.65;
+    }
+
+    header,
+    footer {
+      background: var(--paper);
+      border-color: var(--line);
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      padding: 28px 0;
+    }
+
+    .wrap {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 42px 0 30px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.35rem);
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .meta {
+      margin-top: 14px;
+      color: var(--muted);
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    main {
+      padding: 26px 0 56px;
+    }
+
+    .toc,
+    .slide {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .toc {
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .toc h2,
+    .section-title {
+      margin: 0 0 14px;
+      font-size: 1.35rem;
+      letter-spacing: 0;
+    }
+
+    .toc ol {
+      margin: 0;
+      padding-left: 24px;
+      columns: 2;
+      column-gap: 48px;
+    }
+
+    .chapter-section {
+      margin: 30px 0 16px;
+      padding-top: 4px;
+    }
+
+    .slide {
+      margin: 16px 0;
+      padding: 22px;
+    }
+
+    .slide h3 {
+      margin: 0 0 12px;
+      font-size: 1.2rem;
+      letter-spacing: 0;
+    }
+
+    .page {
+      float: right;
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 22px;
+    }
+
+    li + li {
+      margin-top: 6px;
+    }
+
+    code,
+    pre {
+      background: var(--code);
+      border-radius: 5px;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    }
+
+    code {
+      padding: 1px 4px;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      line-height: 1.45;
+    }
+
+    .note {
+      margin: 12px 0;
+      padding: 12px 16px;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      color: #134e4a;
+    }
+
+    @media (max-width: 760px) {
+      .wrap {
+        width: min(100% - 24px, 1080px);
+      }
+
+      .toc ol {
+        columns: 1;
+      }
+
+      .slide {
+        padding: 18px;
+      }
+
+      .page {
+        float: none;
+        display: block;
+        margin-bottom: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero">
+      <p class="eyebrow">Modern C++ Programming</p>
+      <h1>第 2 章：准备工作</h1>
+      <p class="meta">Federico Busato，原课件日期：2026-01-09。本页为简体中文汉化版，按原 HTML/PDF 章节结构整理。</p>
+      <nav class="links" aria-label="相关链接">
+        <a class="button" href="../../02.Preparation.pdf">原 PDF</a>
+        <a class="button" href="https://federico-busato.github.io/Modern-CPP-Programming/htmls/02.Preparation.html">原 HTML</a>
+        <a class="button" href="01.Introduction.html">上一章</a>
+        <a class="button" href="../../README.zh-CN.md">中文 README</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="toc" aria-labelledby="toc-title">
+      <h2 id="toc-title">目录</h2>
+      <ol>
+        <li><a href="#books">书籍与参考资料</a></li>
+        <li><a href="#legend">幻灯片图例</a></li>
+        <li><a href="#tools">编辑器、IDE 与编译器</a></li>
+        <li><a href="#compile">如何编译</a></li>
+        <li><a href="#hello">Hello World</a></li>
+        <li><a href="#stream">I/O Stream</a></li>
+      </ol>
+    </section>
+
+    <section id="books" class="chapter-section">
+      <h2 class="section-title">书籍与参考资料</h2>
+
+      <article class="slide">
+        <span class="page">2/25</span>
+        <h3>推荐书籍</h3>
+        <ul>
+          <li><em>Programming: Principles and Practice Using C++</em>，Bjarne Stroustrup，第三版，覆盖 C++23。</li>
+          <li><em>Professional C++</em>，Marc Gregoire，第六版，覆盖 C++23。</li>
+          <li><em>Absolute C++</em>，Walter Savitch，第六版，2015。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">3/25</span>
+        <h3>进阶书籍</h3>
+        <ul>
+          <li><em>Effective Modern C++</em>，Scott Meyers，2014。</li>
+          <li><em>Embracing Modern C++ Safely</em>，John Lakos、Vittorio Romeo、Rostislav Khlebnikov、Alisdair Meredith，2021。</li>
+          <li><em>Beautiful C++: 30 Core Guidelines for Writing Clean, Safe, and Fast Code</em>，J. Guy Davidson、Kate Gregory，2021。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">4/25 - 6/25</span>
+        <h3>参考资料</h3>
+        <ul>
+          <li><strong>参考手册：</strong><a href="https://en.cppreference.com/">cppreference</a>、C++ 标准草案。</li>
+          <li><strong>教程：</strong>Learn C++、Tutorials Point C++、Wikibooks C++、个人编程笔记。</li>
+          <li><strong>问答：</strong>Stack Overflow 的 C++ 标签。</li>
+          <li><strong>新闻：</strong>isocpp.org、Reddit C++、LibHunt、Awesome C++ Weekly、Meeting C++ Blogroll、ACCU Overload Journal。</li>
+          <li><strong>练习：</strong>HackerRank C++、LeetCode algorithms、Kattis。</li>
+          <li><strong>会议：</strong>CppCon、CppNow、Meeting C++、CppNorth、ACCU，以及 isocpp.com 的会议列表。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="legend" class="chapter-section">
+      <h2 class="section-title">幻灯片图例</h2>
+
+      <article class="slide">
+        <span class="page">7/25</span>
+        <h3>特殊标记 1/2</h3>
+        <ul>
+          <li><strong>⋆ 高级概念：</strong>通常不是基础内容，可能涉及非常具体的语言细节，或对某个 C++ 特性做更深入探索。初学者可先跳过。</li>
+          <li><strong>⇝ 参见后文：</strong>C++ 概念高度关联，有些内容必须先引用后续主题。读完建议主题后应回头复习这些页。</li>
+          <li><strong>作业：</strong>包含给读者的问题或练习。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">8/25</span>
+        <h3>特殊标记 2/2</h3>
+        <ul>
+          <li>代码区块用于展示程序片段或命令。</li>
+          <li>语言关键字和记号会以代码样式显示，但它们不是普通程序符号，例如变量或函数。</li>
+          <li>后续内容可能继续使用代码区块样式表示这些语言 token，以提升可读性。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">9/25</span>
+        <h3>括号术语</h3>
+        <ul>
+          <li><code>{}</code> braces，俗称 curly brackets，中文常称花括号。</li>
+          <li><code>[]</code> brackets，俗称 square brackets，中文常称方括号。</li>
+          <li><code>()</code> parenthesis，俗称 round brackets，中文常称圆括号。</li>
+          <li><code>&lt;&gt;</code> angle brackets，中文常称尖括号。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="tools" class="chapter-section">
+      <h2 class="section-title">编辑器、IDE 与编译器</h2>
+
+      <article class="slide">
+        <span class="page">10/25</span>
+        <h3>应该使用什么编译器</h3>
+        <ul>
+          <li><strong>MSVC：</strong>Microsoft 提供的 C++ 编译器。</li>
+          <li><strong>GCC：</strong>GNU Compiler Collection，包含 Linux 上最常见的 C++ 编译器。</li>
+          <li><strong>Clang：</strong>基于 LLVM 基础设施，支持 Linux、Windows 和 Apple 平台。</li>
+        </ul>
+        <p class="note">Linux 初学者推荐 Clang：性能与 GCC/MSVC 接近、内存占用较低、诊断信息清晰、标准符合性严格，并包含 sanitizer、静态分析、自动格式化和 lint 等工具。</p>
+      </article>
+
+      <article class="slide">
+        <span class="page">11/25</span>
+        <h3>在 Linux 上安装编译器</h3>
+        <p>大多数 Linux 发行版默认提供 <code>gcc/g++</code>。如需在 Ubuntu/Debian 上安装较新 GCC，可参考：</p>
+        <pre><code>sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt update
+sudo apt install gcc-14 g++-14
+gcc-14 --version</code></pre>
+        <p>Clang/Clang++ 可按 LLVM 官方说明安装最新版本。</p>
+      </article>
+
+      <article class="slide">
+        <span class="page">12/25</span>
+        <h3>在 Windows 上安装编译器</h3>
+        <ul>
+          <li>Microsoft Visual Studio：安装 Visual Studio Community，并选择 C++ 桌面开发相关组件。</li>
+          <li>Clang on Windows：可通过 Windows Subsystem for Linux（WSL）或 LLVM Windows 包使用。</li>
+          <li>Windows 用户通常从 Visual Studio 或 WSL 起步最稳妥。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">13/25</span>
+        <h3>流行 C++ IDE</h3>
+        <ul>
+          <li>Microsoft Visual Studio：Windows 上最流行的 IDE 和 MSVC 编译器组合。</li>
+          <li>CLion：功能强大的跨平台 IDE，非商业使用免费。</li>
+          <li>Qt Creator：速度较快的 C++ IDE，常用于 Qt 项目。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">14/25</span>
+        <h3>图形界面代码编辑器</h3>
+        <ul>
+          <li>Visual Studio Code：轻量、插件生态丰富。</li>
+          <li>Cursor：基于 VS Code 的 AI 辅助代码编辑器。</li>
+          <li>编辑器需要配合编译器、构建系统、调试器和 C++ 语言服务才能形成完整环境。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">15/25 - 16/25</span>
+        <h3>文本编辑器与开发者调查</h3>
+        <ul>
+          <li>Vim、Emacs、NeoVim 等文本编辑器非常强大，但需要更多配置经验。</li>
+          <li>工具选择没有唯一答案，应结合平台、团队、项目构建系统和个人熟悉程度。</li>
+          <li>Stack Overflow Developer Survey 可作为观察工具流行度的参考，但不应成为唯一依据。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="compile" class="chapter-section">
+      <h2 class="section-title">如何编译</h2>
+
+      <article class="slide">
+        <span class="page">17/25</span>
+        <h3>选择 C++ 标准版本</h3>
+        <p>可以显式指定 C++ 标准版本来编译 C++11、C++14、C++17、C++20、C++23 或 C++26 程序。</p>
+        <pre><code>g++ program.cpp -o program
+g++ -std=c++14 program.cpp -o program
+g++ -std=c++20 program.cpp -o program
+g++ -std=c++23 program.cpp -o program</code></pre>
+      </article>
+
+      <article class="slide">
+        <span class="page">18/25</span>
+        <h3>警告与 Sanitizer</h3>
+        <p>尤其对初学者来说，添加警告标志和 sanitizer 是好习惯，可以更早发现潜在问题。</p>
+        <pre><code>g++ -std=c++20 -Wall -Wextra -Wpedantic program.cpp -o program
+clang++ -std=c++20 -Wall -Wextra -fsanitize=address,undefined program.cpp -o program</code></pre>
+        <p class="note">这些选项会在后续课程中更详细解释。现在先养成“带警告编译”的习惯。</p>
+      </article>
+
+      <article class="slide">
+        <span class="page">19/25</span>
+        <h3>C++ 标准支持</h3>
+        <ul>
+          <li>不同编译器对 C++11 到 C++26 的核心语言和标准库支持进度不同。</li>
+          <li>选择标准版本时，需要同时确认编译器版本和标准库版本。</li>
+          <li>工程中应记录最低支持编译器版本，避免开发者环境不一致。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="hello" class="chapter-section">
+      <h2 class="section-title">Hello World</h2>
+
+      <article class="slide">
+        <span class="page">20/25</span>
+        <h3>C 与 C++ 写法对比</h3>
+        <pre><code>// C
+#include &lt;stdio.h&gt;
+
+int main() {
+    printf("Hello World!\n");
+}</code></pre>
+        <pre><code>// C++
+#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; "Hello World!\n";
+}</code></pre>
+      </article>
+
+      <article class="slide">
+        <span class="page">21/25</span>
+        <h3>使用全局 std 命名空间</h3>
+        <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    cout &lt;&lt; "Hello World!\n";
+}</code></pre>
+        <p class="note">课程展示这种写法是为了说明语法，但在实际项目中通常避免在头文件或大作用域里使用 <code>using namespace std;</code>。</p>
+      </article>
+    </section>
+
+    <section id="stream" class="chapter-section">
+      <h2 class="section-title">I/O Stream</h2>
+
+      <article class="slide">
+        <span class="page">22/25</span>
+        <h3><code>std::cout</code></h3>
+        <ul>
+          <li><code>std::cout</code> 是输出流的例子。</li>
+          <li>数据被重定向到某个目的地，这里目的地是标准输出。</li>
+          <li>C++ 流式输出使用 <code>&lt;&lt;</code> 连接多个输出项。</li>
+        </ul>
+        <pre><code>std::cout &lt;&lt; "value = " &lt;&lt; value &lt;&lt; '\n';</code></pre>
+      </article>
+
+      <article class="slide">
+        <span class="page">23/25</span>
+        <h3>为什么优先使用 I/O Stream</h3>
+        <ul>
+          <li><strong>类型安全：</strong>传给 I/O stream 的对象类型在编译期已知；<code>printf</code> 依赖格式占位符动态匹配。</li>
+          <li><strong>更少错误：</strong>没有多余的 <code>%</code> token 需要与实参保持一致。</li>
+          <li><strong>可扩展：</strong>自定义类型可以重载输出运算符来支持流式输出。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">24/25</span>
+        <h3>常见 C I/O 错误</h3>
+        <ul>
+          <li>忘记传入足够数量的参数。</li>
+          <li>使用错误的格式说明符。</li>
+          <li>实参类型与格式字符串不匹配，可能导致未定义行为或错误输出。</li>
+        </ul>
+        <pre><code>printf("long phrase %d long phrase %d", 3);
+
+int a = 3;
+printf("%s", a);</code></pre>
+      </article>
+
+      <article class="slide">
+        <span class="page">25/25</span>
+        <h3><code>std::print</code></h3>
+        <ul>
+          <li>C++23 引入 <code>std::print</code>，它是基于格式字符串的改进输出方式。</li>
+          <li>它保留了很多 C++ stream 的类型安全优势，同时比传统流式输出更简洁。</li>
+        </ul>
+        <pre><code>#include &lt;print&gt;
+
+int main() {
+    std::print("Hello World!\n");
+}</code></pre>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>本汉化页基于 Federico Busato 的 Modern C++ Programming 第 2 章整理。原课程内容许可证请参见仓库中的 LICENSE 文件。</p>
+    </div>
+  </footer>
+</body>
+</html>
