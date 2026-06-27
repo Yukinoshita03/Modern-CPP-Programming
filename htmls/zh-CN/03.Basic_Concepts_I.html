@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>现代 C++ 编程 - 第 3 章：基础概念 I</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --paper: #ffffff;
+      --ink: #1f2933;
+      --muted: #64748b;
+      --line: #d8dee9;
+      --accent: #0f766e;
+      --accent-soft: #e0f2f1;
+      --code: #f1f5f9;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.65;
+    }
+
+    header,
+    footer {
+      background: var(--paper);
+      border-color: var(--line);
+    }
+
+    header {
+      border-bottom: 1px solid var(--line);
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      padding: 28px 0;
+    }
+
+    .wrap {
+      width: min(1080px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 42px 0 30px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.35rem);
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .subtitle,
+    .meta {
+      color: var(--muted);
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      font-size: 1.15rem;
+    }
+
+    .meta {
+      margin-top: 14px;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--paper);
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    main {
+      padding: 26px 0 56px;
+    }
+
+    .toc,
+    .slide {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .toc {
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .toc h2,
+    .section-title {
+      margin: 0 0 14px;
+      font-size: 1.35rem;
+      letter-spacing: 0;
+    }
+
+    .toc ol {
+      margin: 0;
+      padding-left: 24px;
+      columns: 2;
+      column-gap: 48px;
+    }
+
+    .chapter-section {
+      margin: 30px 0 16px;
+      padding-top: 4px;
+    }
+
+    .slide {
+      margin: 16px 0;
+      padding: 22px;
+    }
+
+    .slide h3 {
+      margin: 0 0 12px;
+      font-size: 1.2rem;
+      letter-spacing: 0;
+    }
+
+    .page {
+      float: right;
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 22px;
+    }
+
+    li + li {
+      margin-top: 6px;
+    }
+
+    code,
+    pre {
+      background: var(--code);
+      border-radius: 5px;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    }
+
+    code {
+      padding: 1px 4px;
+    }
+
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      line-height: 1.45;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 0.95rem;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--code);
+    }
+
+    .note {
+      margin: 12px 0;
+      padding: 12px 16px;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      color: #134e4a;
+    }
+
+    @media (max-width: 760px) {
+      .wrap {
+        width: min(100% - 24px, 1080px);
+      }
+
+      .toc ol {
+        columns: 1;
+      }
+
+      .slide {
+        padding: 18px;
+      }
+
+      .page {
+        float: none;
+        display: block;
+        margin-bottom: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero">
+      <p class="eyebrow">Modern C++ Programming</p>
+      <h1>第 3 章：基础概念 I</h1>
+      <p class="subtitle">类型系统、基本类型和运算符</p>
+      <p class="meta">本页为简体中文汉化版，按原 HTML/PDF 章节结构整理。</p>
+      <nav class="links" aria-label="相关链接">
+        <a class="button" href="../../03.Basic_Concepts_I.pdf">原 PDF</a>
+        <a class="button" href="https://federico-busato.github.io/Modern-CPP-Programming/htmls/03.Basic_Concepts_I.html">原 HTML</a>
+        <a class="button" href="02.Preparation.html">上一章</a>
+        <a class="button" href="../../README.zh-CN.md">中文 README</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="toc" aria-labelledby="toc-title">
+      <h2 id="toc-title">目录</h2>
+      <ol>
+        <li><a href="#type-system">C++ 类型系统</a></li>
+        <li><a href="#fundamental">基本类型概览</a></li>
+        <li><a href="#conversion">转换规则</a></li>
+        <li><a href="#auto">`auto` 关键字</a></li>
+        <li><a href="#operators">C++ 运算符</a></li>
+      </ol>
+    </section>
+
+    <section id="type-system" class="chapter-section">
+      <h2 class="section-title">C++ 类型系统</h2>
+
+      <article class="slide">
+        <span class="page">3/29</span>
+        <h3>C++ 是强类型、静态类型语言</h3>
+        <ul>
+          <li>每个实体都有类型，并且类型本身不会在运行时改变。</li>
+          <li>变量、函数和表达式都必须具有类型，程序才能被编译。</li>
+          <li>用户可以通过类、结构体、枚举和别名等机制定义自己的类型。</li>
+          <li>类型系统既是安全机制，也是表达程序设计意图的工具。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">4/29</span>
+        <h3>类型分类</h3>
+        <ul>
+          <li><strong>基本类型：</strong>语言自身提供，不需要额外头文件，常被称为 primitive types。</li>
+          <li><strong>复合类型：</strong>由其他类型组合而成，包括数组、指针、引用、函数、枚举、类和结构体等。</li>
+          <li>理解基本类型是理解对象模型、内存布局、转换规则和运算符行为的前提。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">5/29 - 6/29</span>
+        <h3>类型属性</h3>
+        <ul>
+          <li><strong>对象类型：</strong>具有大小，能对其使用 <code>sizeof</code>。</li>
+          <li><strong>标量类型：</strong>保存单个值，不由其他对象组合而成。</li>
+          <li><strong>平凡可复制：</strong>可以按位复制。</li>
+          <li><strong>标准布局：</strong>对象布局满足标准规定，适合与 C 互操作或进行底层布局推理。</li>
+          <li>这些属性常用于模板约束、性能优化和 ABI 相关判断。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">7/29</span>
+        <h3>C++ 类型总结</h3>
+        <ul>
+          <li>C++ 类型体系庞大，但可以先按“基本类型”和“复合类型”建立主干。</li>
+          <li>后续课程会继续展开类、枚举、引用、指针、函数、模板和标准库类型。</li>
+          <li>类型不是语法附属品，而是 C++ 表达抽象、约束和性能特征的核心。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="fundamental" class="chapter-section">
+      <h2 class="section-title">基本类型概览</h2>
+
+      <article class="slide">
+        <span class="page">8/29</span>
+        <h3>算术类型：整数</h3>
+        <ul>
+          <li>原生整数类型包括 <code>bool</code>、<code>char</code>、<code>short</code>、<code>int</code>、<code>long</code>、<code>long long</code> 及其有符号/无符号变体。</li>
+          <li>字节数和范围与实现相关，不应在可移植代码中盲目假设。</li>
+          <li><code>&lt;cstdint&gt;</code> 提供固定位宽类型，例如 <code>std::int32_t</code>、<code>std::uint64_t</code>。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">9/29</span>
+        <h3>算术类型：浮点</h3>
+        <ul>
+          <li>常见浮点类型包括 <code>float</code>、<code>double</code> 和 <code>long double</code>。</li>
+          <li>多数平台使用 IEEE-754 表示，但 <code>long double</code> 的大小和格式更依赖实现。</li>
+          <li>C++23 引入 <code>&lt;stdfloat&gt;</code>，用于描述更多固定宽度浮点类型。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">10/29</span>
+        <h3>算术类型简写</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>完整写法</th>
+              <th>常用简写</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>signed short int</code></td>
+              <td><code>short</code></td>
+            </tr>
+            <tr>
+              <td><code>signed int</code></td>
+              <td><code>int</code></td>
+            </tr>
+            <tr>
+              <td><code>signed long int</code></td>
+              <td><code>long</code></td>
+            </tr>
+            <tr>
+              <td><code>unsigned int</code></td>
+              <td><code>unsigned</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="slide">
+        <span class="page">11/29 - 12/29</span>
+        <h3>字面量后缀与前缀</h3>
+        <ul>
+          <li>整数后缀可指定类型，例如 <code>3u</code> 表示 <code>unsigned int</code>，<code>5LL</code> 表示 <code>long long</code>。</li>
+          <li>浮点后缀可指定精度，例如 <code>1.0f</code> 是 <code>float</code>，<code>1.0L</code> 是 <code>long double</code>。</li>
+          <li>前缀用于表示进制：<code>0b</code> 二进制、<code>0</code> 八进制、<code>0x</code> 十六进制。</li>
+        </ul>
+        <pre><code>auto a = 42;       // int
+auto b = 42u;      // unsigned int
+auto c = 0b1010;   // binary literal
+auto d = 0xff;     // hexadecimal literal</code></pre>
+      </article>
+
+      <article class="slide">
+        <span class="page">13/29</span>
+        <h3>其他算术类型</h3>
+        <ul>
+          <li>C++ 也提供 <code>long double</code>，但它不一定对应 IEEE-754 固定格式。</li>
+          <li>C++23 前，低精度浮点支持通常依赖编译器扩展或平台特性。</li>
+          <li>实际工程中应确认目标平台、ABI 和编译器对数值类型的具体支持。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">14/29</span>
+        <h3><code>void</code> 类型</h3>
+        <ul>
+          <li><code>void</code> 是不完整类型，没有值。</li>
+          <li><code>void</code> 可表示函数没有返回值，或在 C 风格函数声明中表示无参数。</li>
+          <li><code>void*</code> 是指向未知类型对象的指针，但在 C++ 中使用时需要更谨慎。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">15/29</span>
+        <h3><code>nullptr</code> 关键字</h3>
+        <ul>
+          <li>C++11 引入 <code>nullptr</code> 表示空指针，用来替代 <code>NULL</code> 宏。</li>
+          <li><code>nullptr</code> 的类型是 <code>std::nullptr_t</code>，比整数常量 <code>0</code> 更安全。</li>
+          <li>在重载解析中，<code>nullptr</code> 能减少 <code>0</code> 或 <code>NULL</code> 带来的歧义。</li>
+        </ul>
+        <pre><code>void f(int);
+void f(int*);
+
+f(nullptr); // 调用 f(int*)</code></pre>
+      </article>
+    </section>
+
+    <section id="conversion" class="chapter-section">
+      <h2 class="section-title">转换规则</h2>
+
+      <article class="slide">
+        <span class="page">16/29</span>
+        <h3>隐式类型转换</h3>
+        <ul>
+          <li>在执行运算前，C++ 会按规则对操作数进行隐式类型转换。</li>
+          <li>常见步骤包括浮点提升、整数提升、算术转换等。</li>
+          <li>这些规则会影响表达式的最终类型和值，尤其是有符号/无符号混合运算。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">17/29</span>
+        <h3>示例与常见错误</h3>
+        <pre><code>float    f = 1.0f;
+unsigned u = 2;
+int      i = 3;
+
+auto x = u - i; // 需要理解 unsigned 与 int 的转换规则</code></pre>
+        <ul>
+          <li>混合类型运算可能把有符号值转换为无符号值。</li>
+          <li>转换结果不一定符合直觉，比较和减法尤其容易出错。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">18/29</span>
+        <h3>隐式提升</h3>
+        <ul>
+          <li>小于 32 位的整数类型通常会被提升为 <code>int</code>，无论原始类型是否有符号。</li>
+          <li>一元 <code>+</code>、<code>-</code>、<code>~</code> 和二元算术/位运算都会触发相关提升。</li>
+          <li>写底层代码时，要特别注意 <code>char</code>、<code>short</code>、位运算和符号扩展。</li>
+        </ul>
+      </article>
+    </section>
+
+    <section id="auto" class="chapter-section">
+      <h2 class="section-title"><code>auto</code> 关键字</h2>
+
+      <article class="slide">
+        <span class="page">19/29</span>
+        <h3><code>auto</code> 变量 1/3</h3>
+        <ul>
+          <li>C++11 中，<code>auto</code> 表示变量类型由编译器根据初始化器自动推导。</li>
+          <li>推导的是表达式结果类型，而不是开发者“想象中的类型”。</li>
+          <li><code>auto</code> 可以减少冗长类型名，但不能替代理解类型。</li>
+        </ul>
+        <pre><code>auto a = 1 + 2;     // int
+auto b = 1.0 + 2;   // double
+auto c = 3u;        // unsigned int</code></pre>
+      </article>
+
+      <article class="slide">
+        <span class="page">20/29</span>
+        <h3><code>auto</code> 函数返回类型 2/3</h3>
+        <ul>
+          <li>C++11/C++14 中，<code>auto</code> 和 <code>decltype</code> 可用于函数返回类型。</li>
+          <li>C++11 支持尾置返回类型；C++14 起可让编译器推导返回类型。</li>
+        </ul>
+        <pre><code>auto g(int x) -> int { return x * 2; } // C++11
+auto h(int x) { return x * 2; }        // C++14</code></pre>
+      </article>
+
+      <article class="slide">
+        <span class="page">21/29</span>
+        <h3><code>auto</code> 函数参数 3/3</h3>
+        <ul>
+          <li>C++20 中，<code>auto</code> 也可用于函数输入参数。</li>
+          <li>这种写法本质上等价于简化的函数模板。</li>
+        </ul>
+        <pre><code>void f(auto x) {}
+
+template &lt;class T&gt;
+void f(T x) {}</code></pre>
+      </article>
+    </section>
+
+    <section id="operators" class="chapter-section">
+      <h2 class="section-title">C++ 运算符</h2>
+
+      <article class="slide">
+        <span class="page">22/29</span>
+        <h3>运算符概览</h3>
+        <ul>
+          <li>C++ 运算符有优先级和结合性。</li>
+          <li>后缀自增/自减、前缀自增/自减、一元运算、乘除取模、加减、移位、比较、逻辑和赋值等都有固定优先级。</li>
+          <li>不要依赖读者记忆复杂优先级；必要时使用括号表达意图。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">23/29 - 24/29</span>
+        <h3>运算符优先级</h3>
+        <ul>
+          <li>一元运算符优先级高于二元运算符。</li>
+          <li>标准数学运算符中，乘除取模优先于加减。</li>
+          <li>比较、逻辑与、逻辑或、赋值的优先级依次降低。</li>
+        </ul>
+        <pre><code>a + b * 4;       // a + (b * 4)
+a * b / c % d;   // ((a * b) / c) % d</code></pre>
+      </article>
+
+      <article class="slide">
+        <span class="page">25/29</span>
+        <h3>前缀/后缀自增语义</h3>
+        <ul>
+          <li><strong>前缀：</strong><code>++i</code> 先更新值，再返回更新后的值。</li>
+          <li><strong>后缀：</strong><code>i++</code> 先保存旧值，再更新对象，表达式结果是旧值。</li>
+          <li>对迭代器等类型，前缀形式通常更直接，也可能更高效。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">26/29</span>
+        <h3>运算顺序和未定义行为</h3>
+        <ul>
+          <li>某些表达式在不同 C++ 标准中有不同的求值顺序规则。</li>
+          <li>在一个表达式中多次修改同一对象，或同时读写而顺序未定义，会导致难以推理的行为。</li>
+          <li>工程实践中应写成多条清晰语句，不把副作用藏进复杂表达式。</li>
+        </ul>
+        <pre><code>int i = 0;
+i = ++i + 2; // 旧标准中有未定义行为风险；仍不建议这样写</code></pre>
+      </article>
+
+      <article class="slide">
+        <span class="page">27/29</span>
+        <h3>赋值、复合赋值和逗号运算符</h3>
+        <ul>
+          <li>赋值和复合赋值运算符是从右到左结合。</li>
+          <li>赋值表达式会返回被赋值后的对象。</li>
+          <li>逗号运算符从左到右求值，整个表达式结果是最后一个子表达式。</li>
+        </ul>
+        <pre><code>int x;
+int y = 2;
+x = y = 4; // y 先被赋值，随后 x 被赋值</code></pre>
+      </article>
+
+      <article class="slide">
+        <span class="page">28/29</span>
+        <h3>三路比较运算符 <code>&lt;=&gt;</code></h3>
+        <ul>
+          <li>C++20 引入三路比较运算符 <code>&lt;=&gt;</code>，也称 spaceship operator。</li>
+          <li>它可以像 <code>strcmp</code> 一样一次性表达“小于、等于、大于”的比较结果。</li>
+          <li>返回对象可与 0 比较，也可帮助编译器生成常规比较运算。</li>
+        </ul>
+      </article>
+
+      <article class="slide">
+        <span class="page">29/29</span>
+        <h3>安全比较函数</h3>
+        <ul>
+          <li>C++20 在 <code>&lt;utility&gt;</code> 中提供安全比较函数，用于比较不同整数类型。</li>
+          <li>这些函数能减少有符号/无符号混合比较带来的陷阱。</li>
+        </ul>
+        <pre><code>std::cmp_equal(a, b);
+std::cmp_less(a, b);
+std::cmp_greater(a, b);</code></pre>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>本汉化页基于 Federico Busato 的 Modern C++ Programming 第 3 章整理。原课程内容许可证请参见仓库中的 LICENSE 文件。</p>
+    </div>
+  </footer>
+</body>
+</html>
