@@ -1,5 +1,7 @@
 # Modern C++ Programming
 
+Language: English | [简体中文](README.zh-CN.md)
+
 <p align="center">
 <img src="other/cpp_logo.png" />
 </p>
